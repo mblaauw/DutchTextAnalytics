@@ -36,9 +36,10 @@ rownames(desc.data) <- c("Value")
 
 t(desc.data)
 
-t(describe(tagged.text[["lttr.distrib"]]))
+t(tagged.text@desc$lttr.distrib)
 
-t(describe(hyphenated.text[["syll.distrib"]]))
+
+t(hyphenated.text@desc$syll.distrib)
 
 LD.results <- lex.div(tagged.text, segment=input$LD.segment, factor.size=input$LD.factor, min.tokens=input$LD.minTokens,
                                rand.sample=input$LD.random, window=input$LD.window, case.sens=input$LD.caseSens, detailed=FALSE, char=c(), quiet=TRUE)

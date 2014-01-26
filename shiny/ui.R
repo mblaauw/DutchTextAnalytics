@@ -2,16 +2,16 @@ library(shiny)
 
 shinyUI(
 	pageWithSidebar(
-		headerPanel("koRpus text analysis"),
+		headerPanel("GEA Book Text Analyser"),
 
 		sidebarPanel(
 			# limit the maximum amount of text to be analyzed
 			includeHTML("./maxlength.html"),
 			h4("Text to analyze:"),
 			tags$textarea(id="text", rows=4, cols=40, maxlength=5000,
-				onblur="if(this.value==\"\") this.value=\"(Paste your text here. Please do not supply sensitive data. Text limit is 5000 characters, but should at least have 100 words.)\";",
-				onfocus="if(this.value==\"(Paste your text here. Please do not supply sensitive data. Text limit is 5000 characters, but should at least have 100 words.)\") this.value=\"\";",
-				"(Paste your text here. Please do not supply sensitive data. Text limit is 5000 characters, but should at least have 100 words.)"),
+				onblur="if(this.value==\"\") this.value=\"(Paste your text here. Text limit is 5000 characters, but should at least have 100 words.)\";",
+				onfocus="if(this.value==\"(Paste your text here. Text limit is 5000 characters, but should at least have 100 words.)\") this.value=\"\";",
+				"(Paste your text here. limit is 5000 characters, but should at least have 100 words.)"),
 			selectInput("lang", "Language:", choices = c("en", "de", "es", "fr", "it", "ru")),
 			conditionalPanel("input.tab == 'chkLexdiv'",
 				h4("Lexical diversity options:"),
@@ -108,6 +108,11 @@ shinyUI(
 					pre(textOutput("langDect.res")),
 					value="chkLangDect"
 				),
+				tabPanel("Sentiment Detection",
+				         pre(textOutput("SentimentDect.res")),
+				         value="chkSentimentDect"
+				),
+				
 				id="tab"
 			)
 		)
