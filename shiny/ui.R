@@ -2,7 +2,7 @@ library(shiny)
 
 shinyUI(
 	pageWithSidebar(
-		headerPanel("GEA Book Text Analyser"),
+	  headerPanel("GEA Text Analyser"),
 
 		sidebarPanel(
 			# limit the maximum amount of text to be analyzed
