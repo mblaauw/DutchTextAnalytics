@@ -53,14 +53,6 @@ shinyServer(function(input, output){
 		RD.results()
 	})
 	
-  # Language detection Tab functionality 
-  langDect.results <- reactive({
-		guess.lang(input$text, udhr.path="/var/shiny-server/www/koRpus/udhr_txt", format="obj")
-	})
-	output$langDect.res <- renderPrint({
-		summary(langDect.results())
-	})
-
   # Sentiment Tab functionality
 	SentimentDect.results <- reactive({
 	  library(ggplot2)

@@ -104,10 +104,6 @@ shinyUI(
 					pre(textOutput("readability.res")),
 					value="chkReadability"
 				),
-				tabPanel("Language detection",
-					pre(textOutput("langDect.res")),
-					value="chkLangDect"
-				),
 				tabPanel("Sentiment Detection",
           h5("Sentiment Flow Detail"),
           plotOutput("SentimentDectDetail.plot")
