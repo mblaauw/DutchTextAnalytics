@@ -1,5 +1,9 @@
 library(shiny)
 library(koRpus)
+library(ggplot2)
+library(reshape2)
+
+
 
 shinyServer(function(input, output){
 
@@ -49,7 +53,24 @@ shinyServer(function(input, output){
 	langDect.results <- reactive({
 		guess.lang(input$text, udhr.path="/var/shiny-server/www/koRpus/udhr_txt", format="obj")
 	})
+  
 	output$langDect.res <- renderPrint({
 		summary(langDect.results())
 	})
+  
+  
+
+  # Sentiment Tab functionality
+  output$SentimentDect.res <- reactive({
+
+    
+    
+    
+  })
+  
+	output$SentimentDect.res <- renderPrint({
+	  summary(SentimentDect.results())
+	})
+  
+  
 })
