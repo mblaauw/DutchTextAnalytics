@@ -14,6 +14,16 @@ shinyServer(function(input, output){
 			hyphen(tagged.text(), quiet=TRUE)
 		})
 
+  # Language Detection
+	language.result <- reactive ({
+	  library(textcat)
+	  textcat(input$text)        
+	})
+  
+  output$language.result <- renderPrint({
+    language.result()          
+	})
+  
 	# Descriptive Statistics Tab functionality
 	output$letter.plot <- renderPlot(plot(tagged.text(), what="letters"))
 	output$desc <- renderTable({
@@ -107,6 +117,12 @@ shinyServer(function(input, output){
 	  # detail plot
 	  print(plot.sentiment + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
 	})
-
+  
+  # Google NGram Check
+	output$GoogleNgramCheck.plot <- renderPlot({
+	  require(ggplot2)
+	  print(ggram(c(input$author, input$title), year_start = 1980, ignore_case=FALSE, geom="line", google_theme=TRUE))
+    
+	})  
   
 })

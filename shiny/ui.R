@@ -5,6 +5,14 @@ shinyUI(
 	  headerPanel("Publishing Analytics and Prediction Aid (PAPA)"),
 
 		sidebarPanel(
+		  tags$head(
+		    tags$style(type="text/css", "label.radio { display: inline-block; }", ".radio input[type=\"radio\"] { float: none; }"),
+		    tags$style(type="text/css", "select { max-width: 200px; }"),
+		    tags$style(type="text/css", "textarea { max-width: 185px; }"),
+		    tags$style(type="text/css", ".jslider { max-width: 200px; }"),
+		    tags$style(type='text/css', ".well { padding: 12px; margin-bottom: 5px; max-width: 280px; }"),
+		    tags$style(type='text/css', ".span4 { max-width: 280px; }")
+		  ),
 			# limit the maximum amount of text to be analyzed
 			includeHTML("./maxlength.html"),
 			h4("Text to analyze:"),
@@ -12,7 +20,9 @@ shinyUI(
 				onblur="if(this.value==\"\") this.value=\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\";",
 				onfocus="if(this.value==\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\") this.value=\"\";",
 				"(Paste your text here. limit is 10000 characters, but should at least have 100 words.)"),
-			selectInput("lang", "Language:", choices = c("en", "de", "es", "fr", "it", "ru")),
+      textInput(inputId="author",label="Author"),
+			textInput(inputId="title",label="Title"),
+      selectInput("lang", "Language:", choices = c("en", "de", "es", "fr", "it", "ru")),
 			conditionalPanel("input.tab == 'chkLexdiv'",
 				h4("Lexical diversity options:"),
 				numericInput("LD.segment", "MSTTR segment size:", 100),
@@ -82,14 +92,18 @@ shinyUI(
 		
 		mainPanel(
 			tabsetPanel(
-				tabPanel("Descriptive statistics",
-					tableOutput("desc"),
-					h5("Word length (letters)"),
-					tableOutput("desc.lttr.disrib"),
-					h5("Word length (syllables)"),
-					tableOutput("syll.disrib"),
-					plotOutput("letter.plot")
+				tabPanel("Language Detection",
+					h5("Detected Language"),
+					pre(textOutput("language.result"))
 				),
+				tabPanel("Descriptive statistics",
+          tableOutput("desc"),
+          h5("Word length (letters)"),
+          tableOutput("desc.lttr.disrib"),
+          h5("Word length (syllables)"),
+          tableOutput("syll.disrib"),
+          plotOutput("letter.plot")
+					),
 				tabPanel("Lexical diversity",
 					h5("Summary"),
 					tableOutput("lexdiv.sum"),
@@ -108,7 +122,10 @@ shinyUI(
           h5("Sentiment Flow Detail"),
           plotOutput("SentimentDectDetail.plot")
 				),
-				
+				tabPanel("Google N-Gram Check",
+          h5("Google N-Gram check for Author and Title"),
+          plotOutput("GoogleNgramCheck.plot")
+				),				
 				id="tab"
 			)
 		)
