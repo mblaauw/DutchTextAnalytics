@@ -83,7 +83,7 @@ v_termco      = termco(text,match.list=action.verbs)
 outlier.detect(text, FUN=syllable.sum)
 
 
-v_ngrams      = ngrams(text,n=3)
+v_ngrams      = ngrams(text, seq_along(text), 3)
 v_allwords    = all_words(text)
 v_wordlist    = word_list(text, stopwords=v_stopwords)
 
@@ -95,7 +95,10 @@ v_ngrams$group_n
 
 v_wordlist    = word_list(text, stopwords=v_stopwords, grouping.var=NAMES_SEX$name)
 
+library(tau)
+x = textcnt(text, method="ngram", n=3L)
 
+x = sapply(text, textcnt, method = "ngram")
 
 
 
@@ -106,6 +109,9 @@ v_wordlist    = word_list(text, stopwords=v_stopwords, grouping.var=NAMES_SEX$na
 word_diff_list(v_allwords, grouping.var=action.verbs, stopwords=v_stopwords)
 
 v_ngrams$group_n$'row 1'$n_3
+
+
+library(qdap)
 
 
 
