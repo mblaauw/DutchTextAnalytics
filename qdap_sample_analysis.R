@@ -163,7 +163,7 @@ sum.combo_syllable  = combo_syllable.sum(text, parallel = TRUE)
 
 text.pos            = pos(count.words.freq, parallel = TRUE, na.omit = FALSE, digits = 1, progress.bar = TRUE, percent = FALSE, zero.replace = 0, gc.rate = 10)
 text.formality      = formality(text.pos, grouping.var = NULL, sort.by.formality = TRUE, digits = 2)
-text.polarity       = polarity(text, grouping.var = NULL, positive.list = pos, negative.list = neg, 
+text.polarity       = polarity(text, grouping.var = NULL, positive.list = positive.words, negative.list = negative.words, 
                                negation.list = negation.words, amplification.list = increase.amplification.words, 
                                rm.incomplete = FALSE, digits = 3)
 
@@ -173,7 +173,7 @@ pos = data(positive.words)
 neg = data(negative.words)
 amp = data(a)
 
-polarity(text, grouping.var = NULL, positive.list = pos, negative.list = neg, 
+polarity(text, grouping.var = NULL, positive.list = positive.words, negative.list = negative.words, 
          negation.list = negation.words, amplification.list = increase.amplification.words, 
          rm.incomplete = FALSE, digits = 3)
 
