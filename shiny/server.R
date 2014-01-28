@@ -7,6 +7,9 @@ library(reshape2)
 
 shinyServer(function(input, output){
   
+
+  
+  
   tagged.text <- reactive(tokenize(input$text, format="obj", lang=input$lang))
   hyphenated.text <- reactive({
     # set the next line to activate caching, if this application is run on a shiny server

@@ -16,10 +16,11 @@ shinyUI(
       # limit the maximum amount of text to be analyzed
       includeHTML("./maxlength.html"),
       h4("Text to analyze:"),
-      tags$textarea(id="text", rows=4, cols=40, maxlength=10000,
+      tags$textarea(id="text", rows=4, cols=40, maxlength=20000,
                     onblur="if(this.value==\"\") this.value=\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\";",
                     onfocus="if(this.value==\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\") this.value=\"\";",
                     "(Paste your text here. limit is 10000 characters, but should at least have 100 words.)"),
+      
       textInput(inputId="author",label="Author"),
       textInput(inputId="title",label="Title"),
       selectInput("lang", "Language:", choices = c("en", "de", "es", "fr", "it", "ru")),
@@ -125,7 +126,11 @@ shinyUI(
         tabPanel("Google N-Gram Check",
                  h5("Google N-Gram check for Author and Title"),
                  plotOutput("GoogleNgramCheck.plot")
-        ),				
+        ),		
+        tabPanel("Test",
+                 h5("Test"),
+                 pre(textOutput("input.text"))
+        ),  
         id="tab"
       )
     )
