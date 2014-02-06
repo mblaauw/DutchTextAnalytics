@@ -7,9 +7,6 @@ library(reshape2)
 
 shinyServer(function(input, output){
   
-
-  
-  
   tagged.text <- reactive(tokenize(input$text, format="obj", lang=input$lang))
   hyphenated.text <- reactive({
     # set the next line to activate caching, if this application is run on a shiny server
@@ -21,7 +18,7 @@ shinyServer(function(input, output){
   language.result <- reactive ({
     library(textcat)
     textcat(input$text)   
-
+    
   })
   
   output$language.result <- renderPrint({
@@ -127,7 +124,23 @@ shinyServer(function(input, output){
     library(ngramr)
     require(ggplot2)
     print(ggram(c(input$author, input$title), year_start = 1980, ignore_case=FALSE, geom="line"))
+  }) 
+  
+  # Cover Color Distr 01
+  output$CoverColorDistrType.plot <- renderPlot({
+    require(ggplot2)
+    covercolors <- read.delim("~/Downloads/04_R_PROJECTS/DutchTextAnalytics/data/color_covers_types_pubdate.txt")
+    print(qplot(covercolors$dat, covercolors$type, data=covercolors, geom=c("point"), color=covercolors$color, main="color by date", xlab="pubdate", ylab="color") + theme(legend.position="none"))
     
   })  
+  
+  
+  # Cover Color Distr 02
+  output$CoverColorDistrTime.plot <- renderPlot({
+    require(ggplot2)
+    covercolors <- read.delim("~/Downloads/04_R_PROJECTS/DutchTextAnalytics/data/color_covers_types_pubdate.txt")
+    
+    print(qplot(covercolors$dat, covercolors$color, data=covercolors, geom=c("point"), color=covercolors$color, main="color by date", xlab="pubdate", ylab="color") + theme(legend.position="none"))
+  }) 
   
 })
