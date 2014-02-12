@@ -42,9 +42,11 @@ shinyServer(function(input, output){
     rownames(desc.data) <- c("Value")
     t(desc.data)
   })
+
   output$desc.lttr.disrib <- renderTable({
     t(describe(tagged.text())[["lttr.distrib"]])
   })
+  
   output$syll.disrib <- renderTable({
     t(describe(hyphenated.text())[["syll.distrib"]])
   })
@@ -52,9 +54,11 @@ shinyServer(function(input, output){
   # Lexical Diversity Tab functionality
   LD.results <- reactive(lex.div(tagged.text(), segment=input$LD.segment, factor.size=input$LD.factor, min.tokens=input$LD.minTokens,
                                  rand.sample=input$LD.random, window=input$LD.window, case.sens=input$LD.caseSens, detailed=FALSE, char=c(), quiet=TRUE))
+  
   output$lexdiv.sum <- renderTable({
     summary(LD.results())
   })
+  
   output$lexdiv.res <- renderPrint({
     LD.results()
   })
@@ -64,6 +68,7 @@ shinyServer(function(input, output){
   output$readability.sum <- renderTable({
     summary(RD.results())
   })
+  
   output$readability.res <- renderPrint({
     RD.results()
   })
@@ -133,7 +138,7 @@ shinyServer(function(input, output){
     library(ggplot2)
     library(reshape2)
     
-    word.file <- "/Users/mblaauw/Downloads/06_P_PROJECTS/py-text-stat/data/wordlists/NL_Romance.txt"
+    word.file <- "../data/wordlists/NL_Romance.txt"
     book.label <- input$text
     
     # LOAD resulting words to matrix

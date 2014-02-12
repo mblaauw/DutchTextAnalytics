@@ -1,94 +1,94 @@
-bewonderaar 
-aanbidding 
-aanbidden 
-genegenheid 
-hartelijk 
-verliefd 
-engel 
-ballonnen 
-galant 
-geliefd 
-de mijne 
-verloofd 
-boeket 
-pijl en boog 
-doos bonbons 
-vriendje 
-snoep 
-kaart 
-anjer 
-ingenomen 
-koesteren 
-cherubijn 
-chocolade 
-hof 
-verkering 
-gek 
-verpletteren 
-Cupido 
-lieveling 
-datum 
-lieve 
-versieren 
-verlangen 
-toewijding 
-duiven 
-omhelzen 
-verliefd 
-liefkozing 
-envelop 
-Eros 
-verliefd worden 
-februari 
-verloofde 
-vlam 
-flirt 
-bloemen 
-genegenheid 
-vergeet-mij-nietjes 
-veertiende 
-vriend 
-vriendschap 
-gift 
-vriendin 
-groet 
-wenskaart 
-hart 
-hartenbreker 
-feestdag 
-honing 
-omhelzing 
-verzotheid 
-kus 
-zoals 
-liefde 
-tortelduifjes 
-smoorverliefd 
-maanziek 
-partij 
-passie 
-roze 
-gedicht 
-presenteert 
-rood 
-romance 
-romantisch 
-roze 
-Sint-Valentijn 
-geheime aanbidder 
-sentimenteel 
-getroffen 
-St. Valentijn 
-aanzoeker 
-liefje 
-snoepgoed 
-tederheid 
-tulpen 
-ware liefde 
-onbeantwoorde liefde 
-Valentijn 
-Valentijnsdag 
-wilde over 
-vrijen 
-vrijer 
-smachtend verlangen
+bewonderaar	1
+aanbidding	1
+aanbidden	1
+genegenheid	1
+hartelijk	1
+verliefd	1
+engel	1
+ballonnen	1
+galant	1
+geliefd	1
+de	1mijne	1
+verloofd	1
+boeket	1
+pijl	1en	1boog	1
+doos	1bonbons	1
+vriendje	1
+snoep	1
+kaart	1
+anjer	1
+ingenomen	1
+koesteren	1
+cherubijn	1
+chocolade	1
+hof	1
+verkering	1
+gek	1
+verpletteren	1
+Cupido	1
+lieveling	1
+datum	1
+lieve	1
+versieren	1
+verlangen	1
+toewijding	1
+duiven	1
+omhelzen	1
+verliefd	1
+liefkozing	1
+envelop	1
+Eros	1
+verliefd	1worden	1
+februari	1
+verloofde	1
+vlam	1
+flirt	1
+bloemen	1
+genegenheid	1
+vergeet-mij-nietjes	1
+veertiende	1
+vriend	1
+vriendschap	1
+gift	1
+vriendin	1
+groet	1
+wenskaart	1
+hart	1
+hartenbreker	1
+feestdag	1
+honing	1
+omhelzing	1
+verzotheid	1
+kus	1
+zoals	1
+liefde	1
+tortelduifjes	1
+smoorverliefd	1
+maanziek	1
+partij	1
+passie	1
+roze	1
+gedicht	1
+presenteert	1
+rood	1
+romance	1
+romantisch	1
+roze	1
+Sint-Valentijn	1
+geheime	1aanbidder	1
+sentimenteel	1
+getroffen	1
+St.	1Valentijn	1
+aanzoeker	1
+liefje	1
+snoepgoed	1
+tederheid	1
+tulpen	1
+ware	1liefde	1
+onbeantwoorde	1liefde	1
+Valentijn	1
+Valentijnsdag	1
+wilde	1over	1
+vrijen	1
+vrijer	1
+smachtend	1verlangen
