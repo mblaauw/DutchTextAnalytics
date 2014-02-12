@@ -8,11 +8,11 @@ engel	1
 ballonnen	1
 galant	1
 geliefd	1
-de	1mijne	1
+demijne	1
 verloofd	1
 boeket	1
-pijl	1en	1boog	1
-doos	1bonbons	1
+pijlenboog	1
+doosbonbons	1
 vriendje	1
 snoep	1
 kaart	1
@@ -38,7 +38,7 @@ verliefd	1
 liefkozing	1
 envelop	1
 Eros	1
-verliefd	1worden	1
+verliefdworden	1
 februari	1
 verloofde	1
 vlam	1
@@ -75,20 +75,20 @@ romance	1
 romantisch	1
 roze	1
 Sint-Valentijn	1
-geheime	1aanbidder	1
+geheimeaanbidder	1
 sentimenteel	1
 getroffen	1
-St.	1Valentijn	1
+St.Valentijn	1
 aanzoeker	1
 liefje	1
 snoepgoed	1
 tederheid	1
 tulpen	1
-ware	1liefde	1
-onbeantwoorde	1liefde	1
+wareliefde	1
+onbeantwoordeliefde	1
 Valentijn	1
 Valentijnsdag	1
-wilde	1over	1
+wildeover	1
 vrijen	1
 vrijer	1
-smachtend	1verlangen
+smachtendverlangen	1
