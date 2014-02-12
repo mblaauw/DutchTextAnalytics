@@ -172,13 +172,12 @@ shinyServer(function(input, output){
     escores
     
   })
-  
   output$RomanceDect.plot <- renderPlot({
     # Create base plot
-    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='red'))
+    plot.words<- ggplot(RomanceDect.results(), aes(x = percent, y = sentiment, color='red'))
     
     # detail plot
-    print(plot.sentiment + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
+    print(plot.words + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
   })
  
 })
