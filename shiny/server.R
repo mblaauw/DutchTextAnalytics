@@ -3,26 +3,30 @@ library(koRpus)
 library(ggplot2)
 library(reshape2)
 
-
-
 shinyServer(function(input, output){
+
+  # Language Detection
+  language.result <- reactive ({
+    library(textcat)
+    textcat(substr(readChar(input$text, file.info(input$text)$size),1,10000))   
+    
+  })
+  # Ouput language detection
+  output$language.result <- renderPrint({
+    language.result()          
+  })
   
-  tagged.text <- reactive(tokenize(input$text, format="obj", lang=input$lang))
+  
+  # Tag the text  
+  tagged.text <- reactive({
+    tokenize(substr(readChar(input$text, file.info(input$text)$size),1,10000), format="obj", lang='en')
+  })
+  
+  # Hypenate the text
   hyphenated.text <- reactive({
     # set the next line to activate caching, if this application is run on a shiny server
     #set.kRp.env(hyph.cache.file=file.path("/var","shiny-server","cache","koRpus",paste("hyph.cache.",input$lang,".rdata", sep="")))
     hyphen(tagged.text(), quiet=TRUE)
-  })
-  
-  # Language Detection
-  language.result <- reactive ({
-    library(textcat)
-    textcat(input$text)   
-    
-  })
-  
-  output$language.result <- renderPrint({
-    language.result()          
   })
   
   # Descriptive Statistics Tab functionality
@@ -68,11 +72,9 @@ shinyServer(function(input, output){
   SentimentDect.results <- reactive({
     library(ggplot2)
     library(reshape2)
-    
-    
-    sentiment.file <- "../data/EN_AFINN-111.txt"
-    input.text <- input$text
-    book.label <- 'Input text'
+
+    sentiment.file <- "../data/NL_AFINN-111.txt"
+    book.label <- input$text
     
     # LOAD Sentiment words to matrix
     df.sentiments <- read.table(sentiment.file,header=F,sep="\t",quote="",col.names=c("term","score"))
@@ -82,8 +84,7 @@ shinyServer(function(input, output){
     ScoreTerm <- function(term){
       df.sentiments[match(term,df.sentiments[,"term"]),"score"]
     }
-    ScoreText <- function(input.text){
-      text <- input.text
+    ScoreText <- function(text){
       text <- tolower(gsub("[^[:alnum:]]", " ",text))
       text <- do.call(c,strsplit(text," "))
       text <- text[text!=""]
@@ -103,7 +104,7 @@ shinyServer(function(input, output){
     }
     
     # reshape scores 
-    scores <- ScoreText(input.text)
+    scores <- ScoreText(readChar(input$text, file.info(input$text)$size))
     percent.scores <- as.data.frame(RollUpScores(scores))
     colnames(percent.scores)<-book.label
     percent.scores$percent <- 1:nrow(percent.scores)
@@ -126,21 +127,58 @@ shinyServer(function(input, output){
     print(ggram(c(input$author, input$title), year_start = 1980, ignore_case=FALSE, geom="line"))
   }) 
   
-  # Cover Color Distr 01
-  output$CoverColorDistrType.plot <- renderPlot({
-    require(ggplot2)
-    covercolors <- read.delim("~/Downloads/04_R_PROJECTS/DutchTextAnalytics/data/color_covers_types_pubdate.txt")
-    print(qplot(covercolors$dat, covercolors$type, data=covercolors, geom=c("point"), color=covercolors$color, main="color by date", xlab="pubdate", ylab="color") + theme(legend.position="none"))
+  
+  # Romance Tab functionality
+  RomanceDect.results <- reactive({
+    library(ggplot2)
+    library(reshape2)
     
-  })  
-  
-  
-  # Cover Color Distr 02
-  output$CoverColorDistrTime.plot <- renderPlot({
-    require(ggplot2)
-    covercolors <- read.delim("~/Downloads/04_R_PROJECTS/DutchTextAnalytics/data/color_covers_types_pubdate.txt")
+    word.file <- "/Users/mblaauw/Downloads/06_P_PROJECTS/py-text-stat/data/wordlists/NL_Romance.txt"
+    book.label <- input$text
     
-    print(qplot(covercolors$dat, covercolors$color, data=covercolors, geom=c("point"), color=covercolors$color, main="color by date", xlab="pubdate", ylab="color") + theme(legend.position="none"))
-  }) 
+    # LOAD resulting words to matrix
+    df.words  <- read.table(word.file, header=F, sep="\t", quote="", col.names=c("term","score"))
+    df.words$term <- gsub("[^[:alnum:]]", " ",df.words$term)
+    
+    # Build Scoring functions
+    ScoreTerm <- function(term){
+      df.words[match(term,df.words[,"term"]),"score"]
+    }
+    ScoreText <- function(text){
+      text <- tolower(gsub("[^[:alnum:]]", " ",text))
+      text <- do.call(c,strsplit(text," "))
+      text <- text[text!=""]
+      scores <- ScoreTerm(text)
+      scores[is.na(scores)] <- 0
+      scores
+    }
+    RollUpScores <-function(scores, parts=100){
+      batch.size <- length(scores)/parts
+      
+      s <- sapply(seq(batch.size/2, length(scores) - batch.size/2, batch.size), function(x){
+        low  <- x - (batch.size/2)
+        high <- x + (batch.size/2)
+        mean(scores[low:high])
+      })
+      s
+    }
+    
+    # reshape scores 
+    scores <- ScoreText(readChar(input$text, file.info(input$text)$size))
+    percent.scores <- as.data.frame(RollUpScores(scores))
+    colnames(percent.scores)<-book.label
+    percent.scores$percent <- 1:nrow(percent.scores)
+    escores <- melt(percent.scores,"percent",book.label,variable.name="book",value.name="sentiment")
+    escores
+    
+  })
   
+  output$RomanceDect.plot <- renderPlot({
+    # Create base plot
+    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='red'))
+    
+    # detail plot
+    print(plot.sentiment + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
+  })
+ 
 })

@@ -16,13 +16,11 @@ shinyUI(
       # limit the maximum amount of text to be analyzed
       includeHTML("./maxlength.html"),
       h4("Text to analyze:"),
-      tags$textarea(id="text", rows=4, cols=40, maxlength=10000,
-                    onblur="if(this.value==\"\") this.value=\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\";",
-                    onfocus="if(this.value==\"(Paste your text here. Text limit is 10000 characters, but should at least have 100 words.)\") this.value=\"\";",
-                    "(Paste your text here. limit is 10000 characters, but should at least have 100 words.)"),
-      textInput(inputId="author",label="Author"),
-      textInput(inputId="title",label="Title"),
-      selectInput("lang", "Language:", choices = c("en", "de", "es", "fr", "it", "ru")),
+    
+      selectInput("text", "Book:", choices = c("../data/misc-nl/Anna Karenina - Leo Nikolaj Tolstoj.txt", 
+                                               "../data/misc-nl/Orka in vrijheid.txt",
+                                               "../data/misc-nl/Ben Hur - Lewis Wallace.txt",
+                                               "../data/misc-nl/Avonturen van Don Quichot - Miguel de Cervantes Saavedra.txt")),
       conditionalPanel("input.tab == 'chkLexdiv'",
                        h4("Lexical diversity options:"),
                        numericInput("LD.segment", "MSTTR segment size:", 100),
@@ -31,6 +29,11 @@ shinyUI(
                        numericInput("LD.random", "HD-D sample size:", 42),
                        numericInput("LD.window", "MATTR moving window:", 100),
                        checkboxInput("LD.caseSens", "Case sensitive", FALSE)
+      ),
+      conditionalPanel("input.tab == 'fldNgrams'",
+                       h4("Ngrams input:"),
+                       textInput(inputId="author",label="Author"),
+                       textInput(inputId="title",label="Title")
       ),
       conditionalPanel("input.tab == 'chkReadability'",
                        h4("Readability options:"),
@@ -120,17 +123,18 @@ shinyUI(
         ),
         tabPanel("Sentiment Detection",
                  h5("Sentiment Flow Detail"),
-                 plotOutput("SentimentDectDetail.plot")
+                 plotOutput("SentimentDectDetail.plot"),
+                 value = "fldSentiment"
         ),
         tabPanel("Google N-Gram Check",
                  h5("Google N-Gram check for Author and Title"),
-                 plotOutput("GoogleNgramCheck.plot")
+                 plotOutput("GoogleNgramCheck.plot"),
+                 value = "fldNgrams"
         ),				
-        tabPanel("Cover Color Distr.",
-                 h5("Distribution of Cover Colors (By Type Over Time"),
-                 plotOutput("CoverColorDistrType.plot"),
-                 h5("Distribution of Cover Colors (Over Time)"),
-                 plotOutput("CoverColorDistrTime.plot")
+        tabPanel("Romance Detection.",
+                 h5("Detection of romance thoughout the flow of the story"),
+                 plotOutput("RomanceDect.plot"),
+                 value = 'fldRomance'
         ),  
         id="tab"
       )
