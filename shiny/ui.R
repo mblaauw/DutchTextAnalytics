@@ -32,8 +32,8 @@ shinyUI(
       ),
       conditionalPanel("input.tab == 'fldNgrams'",
                        h4("Ngrams input:"),
-                       textInput(inputId="author",label="Author"),
-                       textInput(inputId="title",label="Title")
+                       textInput(inputId="author",label="Keyword #1"),
+                       textInput(inputId="title",label="Keyword #2")
       ),
       conditionalPanel("input.tab == 'chkReadability'",
                        h4("Readability options:"),
