@@ -1,0 +1,6 @@
+library(shiny)
+library(koRpus)
+library(reshape2)
+library(ngramr)
+require(ggplot2)
+library(textcat)
