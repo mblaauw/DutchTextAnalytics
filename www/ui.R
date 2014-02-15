@@ -2,7 +2,15 @@ shinyUI(pageWithSidebar(
   headerPanel("Publishing Analytics and Prediction Aid (PAPA)"),
   
   # SIDEBAR CONTENT
-  sidebarPanel(width='2',
+  sidebarPanel(
+    tags$head(
+      tags$style(type="text/css", "label.radio { display: inline-block; }", ".radio input[type=\"radio\"] { float: none; }"),
+      tags$style(type="text/css", "select { max-width: 200px; }"),
+      tags$style(type="text/css", "textarea { max-width: 185px; }"),
+      tags$style(type="text/css", ".jslider { max-width: 200px; }"),
+      tags$style(type='text/css', ".well { max-width: 310px; }"),
+      tags$style(type='text/css', ".span4 { max-width: 310px; }")
+    ),
     h4("Book to analyze:"),
     selectInput("text", "", 
                 choices = c("../data/misc-nl/Anna Karenina - Leo Nikolaj Tolstoj.txt",
@@ -23,7 +31,60 @@ shinyUI(pageWithSidebar(
   conditionalPanel(
     condition = "input.tab == 'TabReadability'",
     h4("Readability options:"),
-    checkboxGroupInput('RD.indices','Measures to calculated')
+    checkboxGroupInput('RD.indices','Measures to calculated',
+                       choices=c("ARI"="ARI",
+                                 "ARI (NRI)"="ARI.NRI",
+                                 "ARI (simplified)"="ARI.simple",
+                                 "Coleman-Liau"="Coleman.Liau",
+                                 "Danielson-Bryan"="Danielson.Bryan",
+                                 "Dickes-Steiwer"="Dickes.Steiwer",
+                                 "ELF"="ELF",
+                                 "Farr-Jenkins-Paterson"="Farr.Jenkins.Paterson",
+                                 "Farr-Jenkins-Paterson (Powers-Sumner-Kearl)"="Farr.Jenkins.Paterson.PSK",
+                                 "Flesch"="Flesch",
+                                 "Flesch (Powers-Sumner-Kearl)"="Flesch.PSK",
+                                 "Flesch (DE, Amstad)"="Flesch.de",
+                                 "Flesch (ES, Fernandez-Huerta)"="Flesch.es",
+                                 "Flesch (FR, Kandel-Moles)"="Flesch.fr",
+                                 "Flesch (NL, Douma)"="Flesch.nl",
+                                 "Flesch-Kincaid"="Flesch.Kincaid",
+                                 "FOG"="FOG",
+                                 "FOG (Powers-Sumner-Kearl)"="FOG.PSK",
+                                 "FOG (NRI)"="FOG.NRI",
+                                 "FORCAST"="FORCAST",
+                                 "FORCAST (reading grade level)"="FORCAST.RGL",
+                                 "Fucks Stilcharakteristik"="Fucks",
+                                 "Linsear-Write"="Linsear.Write",
+                                 "LIX"="LIX",
+                                 "Neue Wiener Sachtextformeln"="nWS",
+                                 "RIX"="RIX",
+                                 "SMOG"="SMOG",
+                                 "SMOG (DE, Bamberger-Vanecek)"="SMOG.de",
+                                 "SMOG (formula C)"="SMOG.C",
+                                 "SMOG (simplified)"="SMOG.simple",
+                                 "Strain"="Strain",
+                                 "TRI"="TRI",
+                                 "Wheeler-Smith"="Wheeler.Smith",
+                                 "Wheeler-Smith (DE, Bamberger-Vanecek)"="Wheeler.Smith.de"
+                                 ),
+                       selected=c("ARI",
+                                  "Coleman-Liau",
+                                  "Danielson-Bryan",
+                                  "Dickes-Steiwer",
+                                  "ELF",
+                                  "Farr-Jenkins-Paterson",
+                                  "Flesch",
+                                  "Flesch-Kincaid",
+                                  "FOG",
+                                  "FORCAST",
+                                  "Fucks Stilcharakteristik",
+                                  "Linsear-Write",
+                                  "LIX",
+                                  "RIX",
+                                  "SMOG",
+                                  "Strain",
+                                  "Wheeler-Smith")
+                       )
   ),
   conditionalPanel(
     condition = "input.tab == 'TabNgrams'",
@@ -46,15 +107,15 @@ shinyUI(pageWithSidebar(
       tabPanel(title = "Descriptive statistics", value = "TabDescStat",
                tableOutput("desc"),
                h5("Word length (letters)"),
-               tableOutput("desc.lttr.disrib"),
+               pre(dataTableOutput("desc.lttr.disrib")),
                h5("Word length (syllables)"),
-               tableOutput("syll.disrib"),
-               plotOutput("letter.plot")
+               pre(dataTableOutput("syll.disrib")),
+               pre(plotOutput("letter.plot"))
       ),
       # LEXICAL DIVERSITY
       tabPanel(title="Lexical diversity", value="TabLexdiv",
         h5("Summary"),
-        tableOutput("lexdiv.sum"),
+        pre(dataTableOutput("lexdiv.sum")),
         h5("Details"),
         pre(textOutput("lexdiv.res"))
       ),
@@ -84,7 +145,7 @@ shinyUI(pageWithSidebar(
 
     # FOOTER DETAILS
     HTML("<hr noshade size='1'/>"),
-    HTML("<div style='font-size:8pt; text-align:right; width:100%'>Updates hourly. See <a href='https://gist.github.com/hrbrmstr/8949172'>this gist</a> and <a href='http://rud.is/b/2014/02/11/live-google-spreadsheet-for-keeping-track-of-sochi-medals/'>this blog post</a> for more info.<br/>Shiny hosting provided by <a href='http://dds.ec/'>Data Driven Security</a></div>")
+    HTML("<div style='font-size:8pt; text-align:right; width:100%'>Created by Blaauw Data Intelligence</div>")
   )
   
   

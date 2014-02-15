@@ -1,20 +1,10 @@
 shinyServer(function(input, output){
   
-  # Language Detection
-  language.result <- reactive ({
-    textcat(substr(readChar(input$text, file.info(input$text)$size),1,10000))   
-  })
-  # Ouput language detection
-  output$language.result <- renderPrint({
-    language.result()          
-  })
-  
-  
   # Tag the text  
   tagged.text <- reactive({
     tokenize(substr(readChar(input$text, file.info(input$text)$size),1,10000), format="obj", lang='en')
   })
-  
+
   # Hypenate the text
   hyphenated.text <- reactive({
     # set the next line to activate caching, if this application is run on a shiny server
@@ -22,47 +12,68 @@ shinyServer(function(input, output){
     hyphen(tagged.text(), quiet=TRUE)
   })
   
-  # Descriptive Statistics Tab functionality
-  output$letter.plot <- renderPlot(plot(tagged.text(), what="letters"))
+  
+  # Language Detection
+  language.result <- reactive ({
+    textcat(substr(readChar(input$text, file.info(input$text)$size),1,10000))   
+  })
+  output$language.result <- renderPrint({
+    language.result()          
+  })
+  
+  # Descriptive Statistics Tab functionality 
   output$desc <- renderTable({
-    basic.desc.data <- as.data.frame(describe(tagged.text())[c("all.chars","normalized.space","chars.no.space", "letters.only","lines",
-                                                               "punct","digits","words","sentences","avg.sentc.length","avg.word.length")])
-    syll.desc.data <- as.data.frame(describe(hyphenated.text())[c("num.syll", "avg.syll.word")])
-    colnames(basic.desc.data) <- c("All characters","Normalized space","Characters (no space)", "Characters (letters only)","Lines",
-                                   "Punctuation","Digits","Words","Sentences","Avg. sentence length","Avg. word length")
+    basic.desc.data <- as.data.frame(
+      describe(tagged.text())[
+        c("all.chars", "normalized.space","chars.no.space", 
+          "letters.only","lines", "punct", "digits",
+          "words","sentences","avg.sentc.length","avg.word.length")
+        ])
+    
+    syll.desc.data <- as.data.frame(
+      describe(
+        hyphenated.text())[
+          c("num.syll", "avg.syll.word")
+          ])
+
+    colnames(basic.desc.data) <- c("All characters", "Normalized space",
+                                   "Characters (no space)", "Characters (letters only)",
+                                   "Lines", "Punctuation","Digits","Words","Sentences",
+                                   "Avg. sentence length","Avg. word length")
+    
     colnames(syll.desc.data) <- c("Syllables", "Avg. syllable per word")
     desc.data <- cbind(basic.desc.data, syll.desc.data)
     rownames(desc.data) <- c("Value")
     t(desc.data)
+    
   })
-  
-  output$desc.lttr.disrib <- renderTable({
+  output$desc.lttr.disrib <- renderDataTable({
     t(describe(tagged.text())[["lttr.distrib"]])
-  })
-  
-  output$syll.disrib <- renderTable({
+  }, options=list(bSortClasses = TRUE, aLengthMenu = c(5, 25, 50), iDisplayLength = 9) )
+  output$syll.disrib <- renderDataTable({
     t(describe(hyphenated.text())[["syll.distrib"]])
-  })
+  }, options=list(bSortClasses = TRUE, aLengthMenu = c(5, 25, 50), iDisplayLength = 9) )
+  output$letter.plot <- renderPlot({
+    #print(ggplot(tagged.text(), aes(x=letters)) + geom_histogram(binwidth=.5))
+    plot(tagged.text(), 
+         what="letters", col='red')
+    })
   
   # Lexical Diversity Tab functionality
   LD.results <- reactive(lex.div(tagged.text(), segment=input$LD.segment, factor.size=input$LD.factor, min.tokens=input$LD.minTokens,
                                  rand.sample=input$LD.random, window=input$LD.window, case.sens=input$LD.caseSens, detailed=FALSE, char=c(), quiet=TRUE))
-  
-  output$lexdiv.sum <- renderTable({
+  output$lexdiv.sum <- renderDataTable({
     summary(LD.results())
-  })
-  
+  } , options=list(bSortClasses = TRUE, aLengthMenu = c(5, 25, 50), iDisplayLength = 9))
   output$lexdiv.res <- renderPrint({
     LD.results()
   })
   
   # Readability Tab functionality
-  RD.results <- reactive(readability(tagged.text(), hyphen=hyphenated.text(), index=input$RD.indices, quiet=TRUE))
-  
+  RD.results <- reactive(readability(tagged.text(), hyphen=hyphenated.text(), index=input$RD.indices, quiet=TRUE))  
   output$readability.sum <- renderDataTable({
     summary(RD.results())
-  })
-  
+  }, options=list(bSortClasses = TRUE, aLengthMenu = c(5, 25, 50), iDisplayLength = 9))
   output$readability.res <- renderPrint({
     RD.results()
   })
@@ -110,17 +121,21 @@ shinyServer(function(input, output){
   })
   output$SentimentDectDetail.plot <- renderPlot({
     # Create base plot
-    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='red'))
+    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='#DB0049')  )
     
     # detail plot
-    print(plot.sentiment + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
+    print(plot.sentiment + geom_point() + 
+            stat_smooth(method="loess",span=0.5) + 
+            geom_hline() + theme_bw() + 
+            theme(legend.position="none") + 
+            opts(panel.background = theme_rect(fill='#F5F5F5'),
+                 plot.background = element_rect(fill='#F5F5F5')))
   })
   
   # Google NGram Check
   output$GoogleNgramCheck.plot <- renderPlot({
     print(ggram(c(input$author, input$title), year_start = 1980, ignore_case=FALSE, geom="line"))
-  }) 
-  
+  })   
   
   # Romance Tab functionality
   RomanceDect.results <- reactive({
