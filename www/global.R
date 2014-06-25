@@ -1,4 +1,5 @@
 library(shiny)
+library(qdap)
 library(koRpus)
 library(reshape2)
 library(ngramr)

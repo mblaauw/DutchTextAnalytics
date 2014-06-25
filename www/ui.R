@@ -68,22 +68,8 @@ shinyUI(pageWithSidebar(
                                  "Wheeler-Smith (DE, Bamberger-Vanecek)"="Wheeler.Smith.de"
                                  ),
                        selected=c("ARI",
-                                  "Coleman-Liau",
-                                  "Danielson-Bryan",
-                                  "Dickes-Steiwer",
-                                  "ELF",
-                                  "Farr-Jenkins-Paterson",
-                                  "Flesch",
-                                  "Flesch-Kincaid",
-                                  "FOG",
-                                  "FORCAST",
-                                  "Fucks Stilcharakteristik",
-                                  "Linsear-Write",
-                                  "LIX",
-                                  "RIX",
-                                  "SMOG",
-                                  "Strain",
-                                  "Wheeler-Smith")
+                                  "ARI.NRI"
+                                  )
                        )
   ),
   conditionalPanel(
@@ -140,6 +126,11 @@ shinyUI(pageWithSidebar(
       tabPanel(title = "Romance Detection.", value = 'TabRomance',
         h5("Detection of romance thoughout the flow of the story"),
         plotOutput("RomanceDect.plot")
+      ),
+      # Top Words
+      tabPanel(title = "Top Words", value = 'TabTopWords',
+               h5("Table of wordfrequency"),
+               dataTableOutput("TopWords.tab")
       )
     ),
 

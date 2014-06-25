@@ -103,7 +103,7 @@ x = sapply(text, textcnt, method = "ngram")
 
 
 # wfdf(text,stopwords=v_stopwords)
-
+text = tm::removeWords(text, v_stopwords)
 
 
 word_diff_list(v_allwords, grouping.var=action.verbs, stopwords=v_stopwords)
@@ -117,6 +117,7 @@ library(qdap)
 
 ## NGRAMR 
 library(ngramr)
+v_allwords    = all_words(text)
 ggram(c("Dan Brown"), year_start = 2000, ignore_case=FALSE)
 ggram(c("Dan Brown"), year_start = 1980, ignore_case=FALSE, geom="line", google_theme=TRUE)
 

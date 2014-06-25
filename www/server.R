@@ -121,20 +121,19 @@ shinyServer(function(input, output){
   })
   output$SentimentDectDetail.plot <- renderPlot({
     # Create base plot
-    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='#DB0049')  )
+    plot.sentiment<- ggplot(SentimentDect.results(), aes(x = percent, y = sentiment, color='red'))
     
     # detail plot
-    print(plot.sentiment + geom_point() + 
-            stat_smooth(method="loess",span=0.5) + 
-            geom_hline() + theme_bw() + 
-            theme(legend.position="none") + 
-            opts(panel.background = theme_rect(fill='#F5F5F5'),
-                 plot.background = element_rect(fill='#F5F5F5')))
+    print(plot.sentiment + geom_jitter() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
   })
   
   # Google NGram Check
   output$GoogleNgramCheck.plot <- renderPlot({
     print(ggram(c(input$author, input$title), year_start = 1980, ignore_case=FALSE, geom="line"))
+    
+    ggram(c("Dan Brown"), year_start = 2000, ignore_case=FALSE)
+    ggram(c("Dan Brown"), year_start = 1980, ignore_case=FALSE, geom="line", google_theme=TRUE)
+    
   })   
   
   # Romance Tab functionality
@@ -184,7 +183,26 @@ shinyServer(function(input, output){
     plot.words<- ggplot(RomanceDect.results(), aes(x = percent, y = sentiment, color='red'))
     
     # detail plot
-    print(plot.words + geom_point() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
+    print(plot.words + geom_jitter() + stat_smooth(method="loess",span=0.5) + geom_hline() + facet_grid(book ~.) + theme(legend.position="none"))
   })
+  
+  # Top Words
+  output$TopWords.tab <- renderDataTable({
+    #read text
+    full_text = readChar(input$text, file.info(input$text)$size)
+    
+    v_stopwords   = tm::stopwords("dutch")
+    
+    full_text = tm::removeWords(full_text, v_stopwords)
+    
+    #v_allwords    = wfdf(text,stopwords=v_stopwords)
+    
+    v_allwords    = all_words(full_text, remove_stopwords)
+    
+    v_allwords
+  })
+  
+  
+  
   
 })
